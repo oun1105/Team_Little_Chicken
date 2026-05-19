@@ -62,3 +62,58 @@ function createTeam(){
 
     alert("팀 생성 완료!");
 }
+function sendMessage(){
+
+    const input = document.getElementById("messageInput");
+
+    const chatBox = document.getElementById("chatBox");
+
+    const text = input.value;
+
+    if(text.trim() === ""){
+        return;
+    }
+
+    const message = document.createElement("div");
+
+    message.className = "message me";
+
+    message.innerHTML = text;
+
+    chatBox.appendChild(message);
+
+    input.value = "";
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+
+
+const inputField = document.getElementById("messageInput");
+
+let isComposing = false;
+
+
+
+inputField.addEventListener("compositionstart", () => {
+    isComposing = true;
+});
+
+
+
+inputField.addEventListener("compositionend", () => {
+    isComposing = false;
+});
+
+
+
+inputField.addEventListener("keydown", function(event){
+
+    if(event.key === "Enter" && !isComposing){
+
+        event.preventDefault();
+
+        sendMessage();
+    }
+
+});

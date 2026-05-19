@@ -11,26 +11,103 @@ body{
     justify-content:center;
     align-items:center;
 
-    background:#f2f2f2;
+    background: linear-gradient(
+        135deg,
+        #74ebd5 0%,
+        #ACB6E5 100%
+    );
 
     font-family:Arial;
+
+    overflow:hidden;
+
+    position:relative;
+}
+
+body::before{
+    content:"";
+
+    position:absolute;
+
+    width:300px;
+    height:300px;
+
+    background:rgba(255,255,255,0.15);
+
+    border-radius:50%;
+
+    top:-100px;
+    left:-100px;
+}
+
+body::after{
+    content:"";
+
+    position:absolute;
+
+    width:400px;
+    height:400px;
+
+    background:rgba(255,255,255,0.1);
+
+    border-radius:50%;
+
+    bottom:-150px;
+    right:-150px;
 }
 
 .container{
     width:350px;
 
-    background:white;
+    background:rgba(255,255,255,0.2);
+
+    backdrop-filter:blur(10px);
 
     padding:30px;
 
-    border-radius:10px;
+    border-radius:15px;
 
-    box-shadow:0 0 10px rgba(0,0,0,0.1);
+    border:1px solid rgba(255,255,255,0.3);
+
+    box-shadow:0 10px 30px rgba(0,0,0,0.15);
+
+    transition:0.3s;
+
+    z-index:1;
+}
+
+.container:hover{
+    transform:translateY(-5px);
+}
+
+.logo{
+    text-align:center;
+
+    color:white;
+
+    margin-bottom:10px;
+
+    font-size:28px;
+
+    font-weight:bold;
+}
+
+.subtitle{
+    text-align:center;
+
+    color:#f1f1f1;
+
+    margin-bottom:20px;
+
+    font-size:14px;
 }
 
 h1{
     text-align:center;
+
     margin-bottom:20px;
+
+    color:white;
 }
 
 input{
@@ -40,9 +117,17 @@ input{
 
     margin-bottom:15px;
 
-    border:1px solid #ccc;
+    border:none;
 
-    border-radius:5px;
+    border-radius:8px;
+
+    font-size:15px;
+}
+
+input:focus{
+    outline:none;
+
+    border:2px solid #4a90e2;
 }
 
 button{
@@ -52,7 +137,7 @@ button{
 
     border:none;
 
-    border-radius:5px;
+    border-radius:8px;
 
     background:#4a90e2;
 
@@ -61,17 +146,175 @@ button{
     font-size:16px;
 
     cursor:pointer;
+
+    transition:0.3s;
 }
 
 button:hover{
     background:#357abd;
+
+    transform:scale(1.02);
+}
+
+button:active{
+    transform:scale(0.98);
 }
 
 a{
     text-decoration:none;
-    color:#4a90e2;
+
+    color:white;
+
+    font-weight:bold;
+
+    transition:0.3s;
 }
 
 a:hover{
+    color:#dbe9ff;
+
     text-decoration:underline;
+}
+
+
+
+/* ========================= */
+/* 채팅 화면 */
+/* ========================= */
+
+.chat-container{
+    width:600px;
+
+    height:750px;
+
+    background:rgba(255,255,255,0.2);
+
+    backdrop-filter:blur(10px);
+
+    border-radius:20px;
+
+    border:1px solid rgba(255,255,255,0.3);
+
+    box-shadow:0 10px 30px rgba(0,0,0,0.15);
+
+    display:flex;
+
+    flex-direction:column;
+
+    overflow:hidden;
+
+    z-index:1;
+}
+
+.chat-header{
+    background:#4a90e2;
+
+    color:white;
+
+    padding:20px;
+
+    text-align:center;
+
+    font-size:22px;
+
+    font-weight:bold;
+}
+
+.chat-box{
+    flex:1;
+
+    padding:20px;
+
+    overflow-y:auto;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+}
+
+.message{
+    max-width:70%;
+
+    padding:14px;
+
+    border-radius:12px;
+
+    font-size:16px;
+
+    line-height:1.5;
+
+    word-break:break-word;
+}
+
+.me{
+    align-self:flex-end;
+
+    background:#4a90e2;
+
+    color:white;
+}
+
+.other{
+    align-self:flex-start;
+
+    background:white;
+
+    color:black;
+}
+
+.chat-input-area{
+    display:flex;
+
+    padding:20px;
+
+    gap:10px;
+
+    border-top:1px solid rgba(255,255,255,0.3);
+}
+
+.chat-input-area input{
+    flex:1;
+
+    margin-bottom:0;
+
+    height:45px;
+
+    font-size:16px;
+}
+
+.chat-input-area button{
+    width:80px;
+}
+input::placeholder{
+    color:#999;
+}
+.chat-box::-webkit-scrollbar{
+    width:8px;
+}
+
+.chat-box::-webkit-scrollbar-thumb{
+    background:rgba(255,255,255,0.5);
+
+    border-radius:10px;
+}
+
+.chat-box::-webkit-scrollbar-track{
+    background:transparent;
+}
+.message{
+    animation:fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
 }
