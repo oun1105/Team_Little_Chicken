@@ -1,10 +1,15 @@
 from flask import Blueprint, request, jsonify
 import sqlite3
 import bcrypt
+import jwt
 import os
+from datetime import datetime, timedelta
+from dotenv import load_dotenv
+
+load_dotenv()
 
 auth = Blueprint('auth', __name__)
-
+JWT_SECRET = os.environ.get("JWT_SECRET", "병아리2026")
 DB_PATH = os.path.join(os.path.dirname(__file__), '..', 'database.db')
 
 def get_db():
@@ -73,11 +78,40 @@ def login():
     ):
         return jsonify({"message": "비밀번호가 틀렸습니다"}), 401
 
+    token = jwt.encode(
+        {
+            "user_id": user["id"],
+            "exp": datetime.utcnow() + timedelta(days=7)
+        },
+        JWT_SECRET,
+        algorithm="HS256"
+    )
+
     return jsonify({
         "message": "로그인 성공",
+        "token": token,
         "user": {
             "id": user["id"],
             "email": user["email"],
             "name": user["name"]
         }
     }), 200
+
+def token_required(f):
+    from functools import wraps
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.headers.get("Authorization")
+
+        if not token:
+            return jsonify({"message": "토큰이 없습니다"}), 401
+
+        try:
+            token = token.replace("Bearer ", "")
+            data = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
+            request.user_id = data["user_id"]
+        except:
+            return jsonify({"message": "유효하지 않은 토큰입니다"}), 401
+
+        return f(*args, **kwargs)
+    return decorated
